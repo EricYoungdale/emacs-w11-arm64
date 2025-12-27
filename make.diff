@@ -1,0 +1,71 @@
+*** emacs.clean2/emacs-30.2/src/Makefile Sat Dec 27 10:19:08 2025
+--- emacs.build/src/Makefile Sat Dec 27 10:47:25 2025
+***************
+*** 681,687 ****
+  
+  ifeq ($(DUMPING),pdumper)
+  $(pdmp): emacs$(EXEEXT) $(lispsource)/loaddefs.el $(lispsource)/loaddefs.elc
+! 	LC_ALL=C $(RUN_TEMACS) -batch $(BUILD_DETAILS) -l loadup --temacs=pdump \
+  		--bin-dest $(BIN_DESTDIR) --eln-dest $(ELN_DESTDIR)
+  	cp -f $@ $(bootstrap_pdmp)
+  endif
+--- 681,687 ----
+  
+  ifeq ($(DUMPING),pdumper)
+  $(pdmp): emacs$(EXEEXT) $(lispsource)/loaddefs.el $(lispsource)/loaddefs.elc
+! 	-LC_ALL=C $(RUN_TEMACS) -batch $(BUILD_DETAILS) -l loadup --temacs=pdump \
+  		--bin-dest $(BIN_DESTDIR) --eln-dest $(ELN_DESTDIR)
+  	cp -f $@ $(bootstrap_pdmp)
+  endif
+***************
+*** 974,980 ****
+  	  if test $(SYSTEM_TYPE) = cygwin; then \
+  	    find $@ -name '*.eln' | rebase -v -O -T -; \
+  	  fi; \
+! 	  LC_ALL=C $(RUN_TEMACS) -batch $(BUILD_DETAILS) -l loadup --temacs=pdump \
+  		--bin-dest $(BIN_DESTDIR) --eln-dest $(ELN_DESTDIR) \
+  	  && cp -f emacs$(EXEEXT) bootstrap-emacs$(EXEEXT) \
+  	  && cp -f $(pdmp) $(bootstrap_pdmp); \
+--- 974,980 ----
+  	  if test $(SYSTEM_TYPE) = cygwin; then \
+  	    find $@ -name '*.eln' | rebase -v -O -T -; \
+  	  fi; \
+! 	  -LC_ALL=C $(RUN_TEMACS) -batch $(BUILD_DETAILS) -l loadup --temacs=pdump \
+  		--bin-dest $(BIN_DESTDIR) --eln-dest $(ELN_DESTDIR) \
+  	  && cp -f emacs$(EXEEXT) bootstrap-emacs$(EXEEXT) \
+  	  && cp -f $(pdmp) $(bootstrap_pdmp); \
+***************
+*** 1013,1019 ****
+  ifeq ($(DUMPING),pdumper)
+  $(bootstrap_pdmp): bootstrap-emacs$(EXEEXT)
+  	rm -f $@
+! 	$(RUN_TEMACS) --batch $(BUILD_DETAILS) -l loadup --temacs=pbootstrap \
+  		--bin-dest $(BIN_DESTDIR) --eln-dest $(ELN_DESTDIR)
+  	@: Compile some files earlier to speed up further compilation.
+  	@: First, byte compile these files, ....
+--- 1013,1019 ----
+  ifeq ($(DUMPING),pdumper)
+  $(bootstrap_pdmp): bootstrap-emacs$(EXEEXT)
+  	rm -f $@
+! 	-$(RUN_TEMACS) --batch $(BUILD_DETAILS) -l loadup --temacs=pbootstrap \
+  		--bin-dest $(BIN_DESTDIR) --eln-dest $(ELN_DESTDIR)
+  	@: Compile some files earlier to speed up further compilation.
+  	@: First, byte compile these files, ....
+*** emacs.clean2/emacs-30.2/lisp/Makefile Sat Dec 27 10:19:28 2025
+--- emacs.build/lisp/Makefile Sat Dec 27 10:48:22 2025
+***************
+*** 200,206 ****
+  # need leim-list.el at about the same time, so ensure that it's
+  # generated, too.
+  autoloads: $(lisp)/emacs-lisp/loaddefs-gen.elc gen-lisp
+! 	$(AM_V_GEN)$(emacs) \
+              -l $(lisp)/emacs-lisp/loaddefs-gen.elc \
+  	    -f loaddefs-generate--emacs-batch ${SUBDIRS_ALMOST}
+  
+--- 200,206 ----
+  # need leim-list.el at about the same time, so ensure that it's
+  # generated, too.
+  autoloads: $(lisp)/emacs-lisp/loaddefs-gen.elc gen-lisp
+! 	-$(AM_V_GEN)$(emacs) \
+              -l $(lisp)/emacs-lisp/loaddefs-gen.elc \
+  	    -f loaddefs-generate--emacs-batch ${SUBDIRS_ALMOST}
