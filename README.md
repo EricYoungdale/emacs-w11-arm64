@@ -58,8 +58,7 @@ You need to place a copy of libgmp-10.dll in the 'src' directory so that temacs 
 I found a copy in /msys64/clangarm64/bin/libgmp-10.dll.
 
 This by itself won't be sufficient to get everything to build
-But this by itself will not be sufficient.  You *also* need to tweak the makefile in 'src' and 'lisp'.
+But this by itself will not be sufficient.  You *also* need to tweak the makefile in 'src' and 'lisp'.  The changes are in make.diff
 
 What was happening was that the Makefiles were running temacs.exe, and Make was not correctly detecting that the process exited normally.  This *may* have to do with the fact that Temacs is a subsystem windows application.  That's really just a guess on my part - it could be something else.  But the tools I ran indicate that temacs exited and returned a success code, so the fix was to make it so that make no longer paid attention to the return code.
 
-What I did to work around this was to patch the makefiles.  The changes are in make.diff
